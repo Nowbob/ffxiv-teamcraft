@@ -46,18 +46,12 @@ export class SearchResultComponent {
   constructor(private htmlTools: HtmlToolsService) {
   }
 
-  //Increment nz-input-number value through mouse wheel
-  public increment(event: any): void {
-    this.row.amount += 1;
+  //Increment/Decrement nz-input-number value through mouse wheel
+  public adjust(amount: number): void {
+    this.row.amount += amount;
     if (this.row.amount >= this.maxAmount) {
       this.row.amount = this.maxAmount
-    }
-  }
-
-  //Decrement nz-input-number value through mouse wheel
-  public decrement(event: any): void {
-    this.row.amount -= 1;
-    if (this.row.amount <= this.minAmount) {
+    } else if (this.row.amount <= this.minAmount) {
       this.row.amount = this.minAmount
     }
   }

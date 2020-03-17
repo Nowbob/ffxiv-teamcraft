@@ -106,4 +106,8 @@ export class CustomSimulatorPageComponent extends AbstractSimulationPage {
       })
     );
   }
+
+  public adjust(prop: string, amount: number): void {
+    this.recipeForm.patchValue({[prop]: this.recipeForm.value[prop] + amount});
+  }
 }

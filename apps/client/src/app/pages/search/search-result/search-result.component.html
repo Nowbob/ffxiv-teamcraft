@@ -36,8 +36,8 @@
       <nz-input-group [nzAddOnBefore]="row.recipe !== undefined?addCrafts:null" [nzCompact]="true"
                       class="amount-input">
         <nz-input-number appMouseWheel [(ngModel)]="row.amount" [nzMax]="maxAmount" [nzMin]="minAmount" 
-        (mouseWheelUp)="increment()"
-        (mouseWheelDown)="decrement()"></nz-input-number>
+        (mouseWheelUp)="adjust(1)"
+        (mouseWheelDown)="adjust(-1)"></nz-input-number>
         <ng-template #addCrafts>
           <label [(ngModel)]="row.addCrafts" nz-checkbox>
             {{'Collectable_flag' | translate}}
