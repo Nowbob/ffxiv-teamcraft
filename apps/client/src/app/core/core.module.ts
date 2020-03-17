@@ -43,6 +43,7 @@ import { DevGuard } from './guard/dev.guard';
 import { DATA_REPORTERS } from './data-reporting/data-reporters-index';
 import { VersionLockModule } from '../pages/version-lock/version-lock.module';
 import { LazyComponentDirective } from './tools/lazy-component';
+import { MouseWheelDirective } from './directives/mouse-wheel.directive';
 
 
 @NgModule({
@@ -97,7 +98,8 @@ import { LazyComponentDirective } from './tools/lazy-component';
     TimerPipe,
     DbButtonComponent,
     ItemRarityDirective,
-    LazyComponentDirective
+    LazyComponentDirective,
+    MouseWheelDirective
   ],
   exports: [
     I18nPipe,
@@ -110,7 +112,8 @@ import { LazyComponentDirective } from './tools/lazy-component';
     TimerPipe,
     DbButtonComponent,
     ItemRarityDirective,
-    LazyComponentDirective
+    LazyComponentDirective,
+    MouseWheelDirective
   ]
 })
 export class CoreModule {
