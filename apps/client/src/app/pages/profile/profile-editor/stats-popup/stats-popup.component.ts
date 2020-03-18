@@ -92,4 +92,8 @@ export class StatsPopupComponent implements OnInit {
     this.modalRef.close();
   }
 
+  public adjust(set: GearSet, prop: string, amount: number): void {
+    set[prop] += amount;
+  }
+
 }
