@@ -60,4 +60,9 @@ export class CommunityRotationPopupComponent implements OnInit {
     }
   }
 
+  public adjust(prop: string, amount: number, min: number): void {
+    const newValue: number = Math.max(this.rotation.community[prop] + amount, min);
+    this.rotation.community[prop] = newValue;
+  }
+
 }
