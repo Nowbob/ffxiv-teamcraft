@@ -11,6 +11,10 @@ import { HtmlToolsService } from '../../../core/tools/html-tools.service';
 })
 export class SearchResultComponent {
 
+  //Bounds for number of a single item to be added to lists etc.
+  maxAmount = 999;
+  minAmount = 1;
+
   @Input()
   row: SearchResult;
 
@@ -34,12 +38,6 @@ export class SearchResultComponent {
 
   @Input()
   selected: boolean;
-
-  @Output()
-  maxAmount = 999;
-
-  @Output()
-  minAmount = 1;
 
   searchTypes = SearchType;
 
