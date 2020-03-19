@@ -122,4 +122,9 @@ export class CustomAlarmPopupComponent implements OnInit {
     );
   }
 
+  public adjust(prop: string, amount: number, min: number, max: number): void {
+    const newValue: number = Math.min(Math.max(this.form.value[prop] + amount, min), max);
+    this.form.patchValue({[prop]: newValue});
+  }
+
 }
