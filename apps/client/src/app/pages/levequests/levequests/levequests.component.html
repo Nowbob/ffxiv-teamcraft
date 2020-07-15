@@ -32,13 +32,15 @@
        nz-col>
     <nz-input-group class="levels" nzCompact>
       <div class="levels range">{{'LEVEQUESTS.Level_range' | translate}}</div>
-      <nz-input-number (ngModelChange)="setLevel(levelMin$, $event)" [ngModel]="levelMin$.value" [nzMax]="80"
-                       [nzMin]="1"
-                       [nzPrecision]="0"></nz-input-number>
+      <nz-input-number appMouseWheel (ngModelChange)="setLevel(levelMin$, $event)" [ngModel]="levelMin$.value" 
+                       [nzMax]="curMaxLevel" [nzMin]="1" [nzPrecision]="0"
+                       (mouseWheelUp)="adjust('levelMin$', 1, 1, curMaxLevel)"
+                       (mouseWheelDown)="adjust('levelMin$', -1, 1, curMaxLevel)"></nz-input-number>
       <input disabled nz-input placeholder="-" type="text">
-      <nz-input-number (ngModelChange)="setLevel(levelMax$, $event)" [ngModel]="levelMax$.value" [nzMax]="80"
-                       [nzMin]="levelMin$.value"
-                       [nzPrecision]="0"></nz-input-number>
+      <nz-input-number appMouseWheel (ngModelChange)="setLevel(levelMax$, $event)" [ngModel]="levelMax$.value" 
+                       [nzMax]="curMaxLevel" [nzMin]="levelMin$.value" [nzPrecision]="0"
+                       (mouseWheelUp)="adjust('levelMax$', 1, levelMin$.value, curMaxLevel)"
+                       (mouseWheelDown)="adjust('levelMax$', -1, levelMin$.value, curMaxLevel)"></nz-input-number>
     </nz-input-group>
   </div>
 </div>
@@ -63,11 +65,13 @@
       </div>
     </div>
     <div>Lvl</div>
-    <nz-input-number [(ngModel)]="startingLevel" [nzMax]="79" [nzMin]="1"
-                     [nzPrecision]="0"></nz-input-number>
+    <nz-input-number appMouseWheel [(ngModel)]="startingLevel" [nzMax]="curMaxLevel - 1" [nzMin]="1" [nzPrecision]="0"
+                     (mouseWheelUp)="adjust('startingLevel', 1, 1, curMaxLevel - 1)"
+                     (mouseWheelDown)="adjust('startingLevel', -1, 1, curMaxLevel - 1)"></nz-input-number>
     <div>{{'DB.Exp' | translate}}</div>
-    <nz-input-number [(ngModel)]="startingExp" [nzMax]="getMaxExp(startingLevel) - 1" [nzMin]="0"
-                     [nzPrecision]="0"></nz-input-number>
+    <nz-input-number appMouseWheel [(ngModel)]="startingExp" [nzMax]="getMaxExp(startingLevel) - 1" [nzMin]="0" [nzPrecision]="0"
+                     (mouseWheelUp)="adjust('startingExp', 1, 0, getMaxExp(startingLevel) - 1)"
+                     (mouseWheelDown)="adjust('startingExp', -1, 0, getMaxExp(startingLevel) - 1)"></nz-input-number>
     <div fxLayout="column" fxLayoutAlign="flex-start flex-start">
       <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
         <nz-switch [(ngModel)]="hideLarge" (ngModelChange)="hideLargeChange$.next($event)"
@@ -85,7 +89,7 @@
   <div class="results">
     <app-page-loader [loading]="loading">
       <div fxLayout="column" fxLayoutGap="5px">
-        <div *ngFor="let leve of results;let odd=odd; trackBy: trackByLeve" [class.odd]="odd" class="leve-row">
+        <div *ngFor="let leve of results;let odd=odd; trackBy: trackByLeve; let i = index" [class.odd]="odd" class="leve-row">
           <div fxFlex="1 1 auto" fxLayout="row wrap" fxLayoutAlign="flex-start center" nz-row>
             <div fxLayout="row wrap" fxLayoutAlign="flex-start center" fxLayoutGap="5px" nz-col nzSm="5">
               <label [(ngModel)]="leve.selected" (ngModelChange)="updateAllSelected(results)" class="select-box"
@@ -133,8 +137,9 @@
                   <label [(ngModel)]="leve.hq" class="hq-checkbox" nz-checkbox>
                     {{'Hq' | translate}}
                   </label>
-                  <nz-input-number [(ngModel)]="leve.amount" [nzMax]="999" [nzMin]="0" [nzPrecision]="0"
-                                   class="amount"></nz-input-number>
+                  <nz-input-number appMouseWheel [(ngModel)]="leve.amount" [nzMax]="999" [nzMin]="0" [nzPrecision]="0" class="amount"
+                                   (mouseWheelUp)="adjust('leve.amount', 1, 0, 999, i)"
+                                   (mouseWheelDown)="adjust('leve.amount', -1, 0, 999, i)"></nz-input-number>
                   <label *ngIf="leve.repeats > 0" [(ngModel)]="leve.allDeliveries" class="all-deliveries"
                          nz-checkbox>
                     {{'LEVEQUESTS.All_deliveries' | translate:({ value: leve.repeats + 1 })}}

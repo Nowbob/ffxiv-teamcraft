@@ -32,6 +32,8 @@ interface ExpObj {
 })
 export class LevequestsComponent extends TeamcraftComponent implements OnInit {
 
+  curMaxLevel = 80; //Max player level, 80 for Shadowbringers
+
   jobList: any[] = [];
 
   job$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
@@ -320,13 +322,13 @@ export class LevequestsComponent extends TeamcraftComponent implements OnInit {
 
   private applyExp(exp: number, level: number, expToAdd: number): { exp: number, level: number } {
     exp += expToAdd;
-    while (exp - this.getMaxExp(level) >= 0 && level < 79) {
+    while (exp - this.getMaxExp(level) >= 0 && level < (this.curMaxLevel - 1)) {
       exp -= this.getMaxExp(level);
       level++;
     }
-    // Handle special case for lvl 80
-    if (exp >= this.getMaxExp(level) && level >= 79) {
-      level = 80;
+    // Handle special case for lvl cap
+    if (exp >= this.getMaxExp(level) && level >= (this.curMaxLevel - 1)) {
+      level = this.curMaxLevel;
       exp = 0;
     }
     return {
@@ -362,5 +364,19 @@ export class LevequestsComponent extends TeamcraftComponent implements OnInit {
 
   trackByLeve(index: number, leve: Levequest): number {
     return leve.id;
+  }
+
+  public adjust(prop: string, amount: number, min: number, max: number, index?: number): void {
+    //Special case for handling the BehaviorSubject properties
+    if (this[prop] instanceof BehaviorSubject) {
+      const newValue: number = Math.min(Math.max(this[prop].value + amount, min), max);
+      this[prop].next(newValue);
+    } else if (index !== undefined) { //If we have an index, we handle the Obserable in charge of leves
+      console.log(this.results$);
+      //this.results$[index]
+    } else {                          //If we make it here, we are (hopefully) just working with a simple property
+      const newValue: number = Math.min(Math.max(this[prop] + amount, min), max);
+      this[prop] = newValue;
+    }
   }
 }
